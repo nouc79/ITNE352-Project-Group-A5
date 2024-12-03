@@ -16,7 +16,6 @@ def handle_client(client_socket, client_address):
         return
     print(f"You get request from {Client}: {client_request}") 
 
-    # Sending a dummy response for now
     response = {"message": "Your request has been received."}
     client_socket.send(json.dumps(response).encode('utf-8'))
 
@@ -31,7 +30,7 @@ def start_Server(host="0.0.0.0", port=8999):
     while True:
         client_socket, client_address = server_socket.accept()
         print(f"New connection from {client_address}")
-        # Handle client in a separate thread
+        # We will Handle client in a separate thread
         client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
         client_thread.start()
 
