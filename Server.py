@@ -44,7 +44,7 @@ def handle_client(client_socket, client_address):
 
             # Ask the client to choose an item from the list.
             client_socket.send("Choose an item from the list: ".encode("utf-8"))
-            selected_item = client_socket.recv(1024).decode("utf-8")
+            selected_item = client_socket.recv(1888).decode("utf-8")
 
             # Check if the selected item is valid.
             if selected_item in data.get(client_request, {}):
