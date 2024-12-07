@@ -1,13 +1,14 @@
 import socket
 import threading
 import json
-import requests
+from urllib import request
+
 
 # Function to fetch news from NewsAPI
 def fetch_news():
     API_KEY = "c23b132ee7ae4d1aad0ef2a8924af422"
     api_url = f"https://newsapi.org/v2/top-headlines?country=us&apiKey={API_KEY}"  # Static endpoint for top headlines
-    response = requests.get(api_url)
+    response = request.get(api_url)
     if response.status_code == 200:
         return response.json()
     else:
