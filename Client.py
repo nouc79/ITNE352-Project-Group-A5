@@ -4,12 +4,12 @@ import socket
 
 def connect_to_server():
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect(('127.0.0.1', 1234)) 
+    client_socket.connect(('127.0.0.1', 5501) )
     return client_socket
 
 def communicate_with_server(client_socket, message):
     client_socket.sendall(message.encode())
-    return client_socket.recv(1888).decode()
+    return client_socket.recv(5501).decode()
 
 def display_main_menu():
     print("\nMain Menu:")

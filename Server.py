@@ -4,19 +4,27 @@ import threading
 import json
 import os
 
+
+
+# Function to fetch news from NewsAPI
+def fetch_news():
+    url = 'https://newsapi.org/v2/top-headlines?country=us&apiKey=c23b132ee7ae4d1aad0ef2a8924af422'
+    response = requests.get(url)
+    return response.json()
+
 # Handle client
 def handle_client(client_socket, client_address):
     try:
         # I will receive the client's name and store it.
         client_socket.send("Enter your name please:".encode("utf-8"))
-        client_name = client_socket.recv(1888).decode("utf-8")
+        client_name = client_socket.recv(5501).decode("utf-8")
         print(f"{client_address} connected as {client_name}")
 
         
         while True:
             # Now I will wait for the request from the client.
             client_socket.send("Enter your request option: ".encode("utf-8"))
-            client_request = client_socket.recv(1888).decode("utf-8").strip()
+            client_request = client_socket.recv(5501).decode("utf-8").strip()
             # If it disconnected(The client).
             if client_request.lower() == "quit":  
                 print(f"{client_name} disconnected.")
@@ -48,7 +56,7 @@ def handle_client(client_socket, client_address):
 
             # Ask the client to choose an item from the list.
             client_socket.send("Choose an item from the list: ".encode("utf-8"))
-            selected_item = client_socket.recv(1888).decode("utf-8").strip()
+            selected_item = client_socket.recv(5501).decode("utf-8").strip()
 
             # Check if the selected item is valid.
             if selected_item in data.get(client_request, {}):
@@ -66,7 +74,7 @@ def handle_client(client_socket, client_address):
         client_socket.close()
 
 # The server will start and wait for clients
-def start_Server(host="0.0.0.0", port=1234):
+def start_Server(host="0.0.0.0", port=5501):
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((host, port))
     server_socket.listen(3) 
