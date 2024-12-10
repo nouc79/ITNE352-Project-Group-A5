@@ -5,14 +5,14 @@ import ssl
 def connect_to_server():
     # Establish a socket connection to the server
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect(('127.0.0.1', 5501))  # Connect to the SSL-enabled server
+    client_socket.connect(('0.0.0.0', 5501))  # Connect to the SSL-enabled server
 
     # Use SSL to secure the socket connection
     context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)  # Set SSL context for server authentication
     context.load_verify_locations("server.crt")  # Load server certificate to verify
 
     # Use SSL to encrypt the socket connection
-    secure_client_socket = context.wrap_socket(client_socket, server_hostname="127.0.0.1")
+    secure_client_socket = context.wrap_socket(client_socket, server_hostname="0.0.0.0")
     return secure_client_socket
 
 def communicate_with_server(client_socket, message):

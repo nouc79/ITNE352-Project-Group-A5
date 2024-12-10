@@ -5,7 +5,7 @@ import ssl
 from urllib import request
 
 # Configuration of the server
-S_HOST = '127.0.0.1'
+S_HOST = '0.0.0.0'
 S_PORT = 5501
 API_KEY = "c23b132ee7ae4d1aad0ef2a8924af422"
 GROUP_ID = "A5"
