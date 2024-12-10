@@ -1,95 +1,115 @@
 import socket
 import threading
 import json
+import ssl
 from urllib import request
 
+# Server configuration
+S_HOST = '127.0.0.1'
+S_PORT = 5501
+API_KEY = "c23b132ee7ae4d1aad0ef2a8924af422"
+GROUP_ID = "A5"
 
-# Function to fetch news from NewsAPI
-def fetch_news():
-    API_KEY = "c23b132ee7ae4d1aad0ef2a8924af422"
-    api_url = f"https://newsapi.org/v2/top-headlines?country=us&apiKey={API_KEY}"  # Static endpoint for top headlines
-    response = request.get(api_url)
-    if response.status_code == 200:
-        return response.json()
+# Extract headline data from the API.
+def process_headlines(news_data):
+    articles = []
+    for article in news_data.get('articles', []):
+        articles.append({
+            'source_name': article.get('source', {}).get('name'),
+            'author': article.get('author'),
+            'title': article.get('title'),
+            'url': article.get('url'),
+            'description': article.get('description'),
+            'publish_date': article.get('publishedAt', '')[:10],  # Corrected the slicing to get date
+            'publish_time': article.get('publishedAt', '')[11:19],  # Corrected the slicing to get time
+        })
+    return articles
+
+# Process source data from the API response
+def process_sources(news_data):
+    sources = []
+    for source in news_data.get('sources', []):
+        sources.append({
+            'source_name': source.get('name'),
+            'country': source.get('country'),
+            'description': source.get('description'),
+            'url': source.get('url'),
+            'category': source.get('category'),
+            'language': source.get('language'),
+        })
+    return sources
+
+# Handle client requests
+def process_request(Csocket, query, requested_type, user_name):
+    api_endpoint = f'https://newsapi.org/v2/{query}&apiKey={API_KEY}'
+    resp = request.get(api_endpoint)
+    if resp.status_code == 200:
+        news_data = resp.json()
     else:
-        print(f"Error fetching data: {response.status_code}")
-        return None
+        print(f"Error has been found:  {resp.status_code}")
+        return
 
-# Handle client
-def handle_client(client_socket, client_address):
-    try:
-        # I will receive the client's name and store it.
-        client_socket.send("Enter your name please:".encode("utf-8"))
-        client_name = client_socket.recv(1024).decode("utf-8")
-        print(f"{client_address} connected as {client_name}")
+    # Save data for a JSON file 
+    FName = f"{user_name}_{requested_type}_{GROUP_ID}.json"
+    with open(FName, 'w') as json_file:
+        json.dump(news_data, json_file, indent=5)
+    
+    # Send data to the client
+    if requested_type == "headlines":
+        articles = process_headlines(news_data)
+        response_data = {'type': 'headlines', 'data': articles[:20]}
+        Csocket.send(json.dumps(response_data).encode())
+    elif requested_type == "sources":
+        sources = process_sources(news_data)
+        response_data = {'type': 'sources', 'data': sources[:20]}
+        Csocket.send(json.dumps(response_data).encode())
 
-        while True:
-            # Now I will wait for the request from the client.
-            client_socket.send("Requesting news articles...".encode("utf-8"))
-            client_request = client_socket.recv(1024).decode("utf-8").strip()
-            # If it disconnected (The client).
-            if client_request.lower() == "quit":  
-                print(f"{client_name} disconnected.")
-                break
-
-            print(f"{client_name} requested news articles.")
-
-            # Fetch news data from the API
-            news_data = fetch_news()
-            if news_data is None:
-                client_socket.send("Failed to fetch news data.".encode("utf-8"))
-                continue
-
-            # Now I will save the data to a JSON file.
-            file_name = f"client_data/{client_name}_news_data.json"
-            with open(file_name, "w") as json_file:
-                json.dump(news_data, json_file, indent=4)
-            print(f"Data successfully saved to: {file_name}")
-
-            # Send a list of articles to the client if available
-            articles = news_data.get('articles', [])
-            if articles:
-                # If articles are found, send the titles to the client.
-                titles = [article['title'] for article in articles]
-                client_socket.send(json.dumps({"options": titles}).encode("utf-8"))
-            else:
-                # If no articles are found, inform the client.
-                client_socket.send("No articles found.".encode("utf-8"))
-                continue
-
-            # Ask the client to choose an item from the list.
-            client_socket.send("Choose an item from the list: ".encode("utf-8"))
-            selected_item = client_socket.recv(1024).decode("utf-8").strip()
-
-            # Check if the selected item is valid.
-            if selected_item in titles:
-                # If the item is valid, send the corresponding info to the client.
-                details = next((article for article in articles if article['title'] == selected_item), None)
-                client_socket.send(json.dumps({"details": details}).encode("utf-8"))
-            else:
-                # If the selected item is invalid, tell the client to try again.
-                client_socket.send("Invalid selection, try again.".encode("utf-8"))
-
-    except Exception as e:
-        print(f"Something went wrong with client {client_address}: {e}")
-    finally:
-        print(f"{client_name} has disconnected.")
-        client_socket.close()
-
-# The server will start and wait for clients
-def start_Server(host="127.0.0.1", port=5501):
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind((host, port))
-    server_socket.listen(3) 
-    print("Waiting for clients...")
-
+# Handle client requests
+def client_request_handler(Csocket, user_name):
     while True:
-        client_socket, client_address = server_socket.accept()
-        print(f"{client_address} connected.")
+        requested_data = Csocket.recv(1024).decode()
+        if requested_data.lower() == "exit":
+            print(f"{user_name} got disconnected")
+            Csocket.close()
+            break
+         
+        request = json.loads(requested_data)
+        query = request.get('query')
+        requested_type = request.get('type')
 
-        # Start a new thread for the client
-        client_thread = threading.Thread(target=handle_client, args=(client_socket, client_address))
-        client_thread.start()
+        print(f"Request from {user_name}: with Query: {query}, and Type: {requested_type}")
+        process_request(Csocket, query, requested_type, user_name)
 
-# Start the server
-start_Server()
+# Set up and run the server with SSL
+def main():
+    try:
+        # Create the server socket
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as Ssocket:
+            Ssocket.bind((S_HOST, S_PORT))
+            Ssocket.listen(3)
+            print(f"Server is on, with port: {S_PORT}")
+
+            # Wrap the server socket with SSL
+            context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+            context.load_cert_chain(certfile="server.crt", keyfile="private.key")
+
+            # Secure the server socket with SSL
+            secure_socket = context.wrap_socket(Ssocket, server_side=True)
+
+            while True:
+                try:
+                    Csocket, Caddress = secure_socket.accept()
+                    user_name = Csocket.recv(1024).decode()
+                    print(f"Connection started by {user_name} at {Caddress}")
+                    
+                    # Start a new thread to handle the client
+                    Cthread = threading.Thread(target=client_request_handler, args=(Csocket, user_name))
+                    Cthread.start()
+                except Exception as e:
+                    print(f"Error handling client: {e}")
+    except Exception as e:
+        print(f"Server error: {e}")
+
+# Entry point of the script
+if __name__ == "__main__":
+    main()
