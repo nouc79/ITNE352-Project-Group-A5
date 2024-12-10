@@ -3,20 +3,20 @@ import socket
 import ssl
 
 def connect_to_server():
-    # Create a regular socket connection to the server
+    # Establish a socket connection to the server
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect(('127.0.0.1', 5501))  # Connect to the SSL-enabled server
 
-    # Wrap the socket with SSL for secure communication
+    # Use SSL to secure the socket connection
     context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)  # Set SSL context for server authentication
     context.load_verify_locations("server.crt")  # Load server certificate to verify
 
-    # Wrap the socket with SSL to encrypt the communication
+    # Use SSL to encrypt the socket connection
     secure_client_socket = context.wrap_socket(client_socket, server_hostname="127.0.0.1")
     return secure_client_socket
 
 def communicate_with_server(client_socket, message):
-    # Send message to server
+    # Send a message to the server
     client_socket.sendall(message.encode())  
     return client_socket.recv(5501).decode()  # Receive the server's response
 
@@ -59,7 +59,7 @@ def display_options(client_socket):
             elif headline_option == '4':
                 list_all_headlines(client_socket)
             elif headline_option == '5':
-                continue  # Go back to main menu
+                continue  # Back to main menu
             else:
                 print("Invalid option, please try again.")
 
@@ -75,14 +75,14 @@ def display_options(client_socket):
             elif source_option == '4':
                 list_all_sources(client_socket)
             elif source_option == '5':
-                continue  # Go back to main menu
+                continue  # Back to main menu
             else:
                 print("Invalid option, please try again.")
         
         elif option == '3':  # Quit
             print("Quitting...")
-            client_socket.sendall("Quit".encode())  # Send quit request to server
-            client_socket.close()  # Close the connection
+            client_socket.sendall("Quit".encode())  # Send a quit request to the server
+            client_socket.close()  # Closing the connection
             break
         else:
             print("Invalid option, please try again.")
@@ -129,7 +129,7 @@ def list_all_sources(client_socket):
 
 def send_request(client_socket, mode, request_query, option):
     collection = json.dumps({'type': mode, 'query': request_query, 'option': option})
-    client_socket.sendall(collection.encode())  # Send the request to the server
+    client_socket.sendall(collection.encode())  # Sending request to the server
     response = client_socket.recv(5501).decode()  # Receive the server's response
     try:
         response_data = json.loads(response)
@@ -139,7 +139,7 @@ def send_request(client_socket, mode, request_query, option):
         elif 'details' in response_data:
             display_item_details(response_data['details'])
         else:
-            print(response_data)  # Handle any other message
+            print(response_data)  # Handling other messages
     except json.JSONDecodeError:
         print(f"Server Response: {response}")  # Handle non-JSON response
 
@@ -148,8 +148,7 @@ def display_response_options(options):
     for idx, option in enumerate(options, 1):
         print(f"{idx}. {option}")
     selected_option = input("Select an option for details: ")
-    # Send the selected item back to the server to retrieve full details
-    client_socket.sendall(selected_option.encode())
+    #  The selected item will be sent to the server to get full details.    client_socket.sendall(selected_option.encode())
 
 def display_item_details(details):
     print("\nItem Details:")
@@ -159,8 +158,8 @@ def display_item_details(details):
 def main():
     client_socket = connect_to_server()
     username = input("Enter your username: ")
-    client_socket.sendall(username.encode())  # Send username to server
+    client_socket.sendall(username.encode())  # Sending the username to the server
     display_options(client_socket)
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     main()
