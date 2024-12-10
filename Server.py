@@ -77,7 +77,7 @@ def handle_client(client_socket, client_address):
         client_socket.close()
 
 # The server will start and wait for clients
-def start_Server(host="0.0.0.0", port=5501):
+def start_Server(host="127.0.0.1", port=5501):
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((host, port))
     server_socket.listen(3) 
