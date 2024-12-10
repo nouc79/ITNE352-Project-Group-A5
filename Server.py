@@ -4,13 +4,13 @@ import json
 import ssl
 from urllib import request
 
-# Server configuration
+# Configuration of the server
 S_HOST = '127.0.0.1'
 S_PORT = 5501
 API_KEY = "c23b132ee7ae4d1aad0ef2a8924af422"
 GROUP_ID = "A5"
 
-# Extract headline data from the API.
+# Retrieve headline information from the API
 def process_headlines(news_data):
     articles = []
     for article in news_data.get('articles', []):
@@ -20,12 +20,12 @@ def process_headlines(news_data):
             'title': article.get('title'),
             'url': article.get('url'),
             'description': article.get('description'),
-            'publish_date': article.get('publishedAt', '')[:10],  # Corrected the slicing to get date
-            'publish_time': article.get('publishedAt', '')[11:19],  # Corrected the slicing to get time
+            'publish_date': article.get('publishedAt', '')[:10],  # Fixed the slicing to get the date
+            'publish_time': article.get('publishedAt', '')[11:19],  # Fixed the slicing to get the time
         })
     return articles
 
-# Process source data from the API response
+# Handle the source data from the API response
 def process_sources(news_data):
     sources = []
     for source in news_data.get('sources', []):
@@ -49,12 +49,12 @@ def process_request(Csocket, query, requested_type, user_name):
         print(f"Error has been found:  {resp.status_code}")
         return
 
-    # Save data for a JSON file 
-    FName = f"{user_name}_{requested_type}_{GROUP_ID}.json"
+    # Store data in a JSON file
+    FName = f"{user_name}{requested_type}{GROUP_ID}.json"
     with open(FName, 'w') as json_file:
         json.dump(news_data, json_file, indent=5)
     
-    # Send data to the client
+    # Sending data to the client
     if requested_type == "headlines":
         articles = process_headlines(news_data)
         response_data = {'type': 'headlines', 'data': articles[:20]}
@@ -80,10 +80,10 @@ def client_request_handler(Csocket, user_name):
         print(f"Request from {user_name}: with Query: {query}, and Type: {requested_type}")
         process_request(Csocket, query, requested_type, user_name)
 
-# Set up and run the server with SSL
+# Configure and run the server with SSL
 def main():
     try:
-        # Create the server socket
+        # Creating server socket
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as Ssocket:
             Ssocket.bind((S_HOST, S_PORT))
             Ssocket.listen(3)
@@ -93,7 +93,7 @@ def main():
             context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
             context.load_cert_chain(certfile="server.crt", keyfile="private.key")
 
-            # Secure the server socket with SSL
+            # Protect the server socket with SSL
             secure_socket = context.wrap_socket(Ssocket, server_side=True)
 
             while True:
@@ -102,14 +102,12 @@ def main():
                     user_name = Csocket.recv(1024).decode()
                     print(f"Connection started by {user_name} at {Caddress}")
                     
-                    # Start a new thread to handle the client
+                    # Create a new thread to manage the client
                     Cthread = threading.Thread(target=client_request_handler, args=(Csocket, user_name))
                     Cthread.start()
                 except Exception as e:
                     print(f"Error handling client: {e}")
     except Exception as e:
         print(f"Server error: {e}")
-
-# Entry point of the script
 if __name__ == "__main__":
     main()

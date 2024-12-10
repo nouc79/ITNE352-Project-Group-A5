@@ -161,5 +161,5 @@ def main():
     client_socket.sendall(username.encode())  # Sending the username to the server
     display_options(client_socket)
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
