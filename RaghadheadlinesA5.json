@@ -1,0 +1,97 @@
+{
+     "status": "ok",
+     "totalResults": 7,
+     "articles": [
+          {
+               "source": {
+                    "id": "reuters",
+                    "name": "Reuters"
+               },
+               "author": "Timour Azhari, Maya Gebeily",
+               "title": "Syria central bank vaults left unscathed by Damascus looters, sources say",
+               "description": "The vaults in Syria's central bank were left unscathed by looters in the turmoil that briefly engulfed the capital Damascus after the overthrow of president Bashar al-Assad, a senior business leader and three other sources told Reuters.",
+               "url": "https://www.reuters.com/world/middle-east/syria-central-bank-vaults-left-unscathed-by-damascus-looters-sources-say-2024-12-10/",
+               "urlToImage": "https://www.reuters.com/resizer/v2/TKAQL6T5YZMXRLTUNS4652UAJ4.jpg?auth=9903f535f01eecae36f18e437d4f769a0292b73d0ffb8307533235f994e7ae15&height=1005&width=1920&quality=80&smart=true",
+               "publishedAt": "2024-12-10T17:53:08Z",
+               "content": null
+          },
+          {
+               "source": {
+                    "id": "four-four-two",
+                    "name": "FourFourTwo"
+               },
+               "author": "Callum Rice-Coates",
+               "title": "'I think that\u2019s the respectful thing for two captains to do after a game. I probably boiled over a bit at the end, with a bit of everything coming out': Jarrod Bowen lifts lid on heated clash with Mario Lemina after West Ham's win over Wolves",
+               "description": "Jarrod Bowen has revealed what happened before his tussle with Mario Lemina after West Ham's victory against Wolves.",
+               "url": "https://www.fourfourtwo.com/news/i-think-thats-the-respectful-thing-for-two-captains-to-do-after-a-game-i-probably-boiled-over-a-bit-at-the-end-with-a-bit-of-everything-coming-out-jarrod-bowen-lifts-lid-on-heated-clash-with-mario-lemina-after-west-hams-win-over-wolves",
+               "urlToImage": "https://cdn.mos.cms.futurecdn.net/EytML8AJNZAKLrcro9VfQC-1200-80.jpg",
+               "publishedAt": "2024-12-10T15:38:27Z",
+               "content": "Wolves suffered another blow in their fight to avoid relegation on Monday night as they fell to a 2-1 defeat at West Ham. In a game dubbed El Sackico because of the increasingly precarious positions \u2026 [+2394 chars]"
+          },
+          {
+               "source": {
+                    "id": "nbc-news",
+                    "name": "NBC News"
+               },
+               "author": "Lawrence Hurley",
+               "title": "Supreme Court probes environmental review of Utah oil railway",
+               "description": "The Supreme Court justices will weigh the fate of an 88-mile railroad project that would transport crude oil in Utah as they consider a dispute over whether federal officials conducted a stringent enough environmental review before approving it.",
+               "url": "https://www.nbcnews.com/politics/supreme-court/supreme-court-weighs-environmental-dispute-utah-oil-railway-rcna183069",
+               "urlToImage": "https://media-cldnry.s-nbcnews.com/image/upload/t_nbcnews-fp-1200-630,f_auto,q_auto:best/rockcms/2024-12/241209-train-price-utah-ew-109p-4917dd.jpg",
+               "publishedAt": "2024-12-10T10:00:41Z",
+               "content": "WASHINGTON The Supreme Court on Tuesday weighed the fate of an 88-mile railroad project that would transport crude oil in Utah in a dispute over whether federal officials conducted a stringent enough\u2026 [+4633 chars]"
+          },
+          {
+               "source": {
+                    "id": "talksport",
+                    "name": "TalkSport"
+               },
+               "author": "Liam Hoofe",
+               "title": "Best betting sites UK | Top betting site offers for October 2024...",
+               "description": "Sports bettors in the UK are spoiled for choice among the best betting sites: If you want in-depth football betting markets, there is a bookmaker for you; if you want to bet on esports or TV events\u2026",
+               "url": "https://talksport.com/betting/1760032/best-betting-sites-uk/",
+               "urlToImage": "https://talksport.com/wp-content/uploads/sites/5/2024/08/talksport-best-betting-sites-uk-op.jpg?strip=all&quality=100&w=1920&h=1080&crop=1",
+               "publishedAt": "2024-10-04T08:45:00Z",
+               "content": "Sports bettors in the UK are spoiled for choice among the best betting sites: If you want in-depth football betting markets, there is a bookmaker for you; if you want to bet on esports or TV events, \u2026 [+17381 chars]"
+          },
+          {
+               "source": {
+                    "id": "techcrunch",
+                    "name": "TechCrunch"
+               },
+               "author": "Tim De Chant",
+               "title": "Mycocycle uses mushrooms to upcycle old tires and construction waste | TechCrunch",
+               "description": "The startup's fungi use their mycelium to consume oil-based rubbers and plastics, creating new bio-based materials in the process.",
+               "url": "https://techcrunch.com/2024/05/08/mycocycle-uses-mushrooms-to-upcycle-old-tires-and-construction-waste/",
+               "urlToImage": "https://techcrunch.com/wp-content/uploads/2024/05/GettyImages-1350655821.jpeg?resize=1200,796",
+               "publishedAt": "2024-05-07T18:07:09Z",
+               "content": "Usually, when something starts to rot, it gets pitched in the trash. But Joanne Rodriguez wants to turn the concept of rot on its head by growing fungus on trash to turn it into something better.\r\nWe\u2026 [+4229 chars]"
+          },
+          {
+               "source": {
+                    "id": "lequipe",
+                    "name": "L'equipe"
+               },
+               "author": "L'EQUIPE",
+               "title": "Manchester City au complet pour la finale de la Ligue des champions",
+               "description": "Manchester City a d\u00e9voil\u00e9 un groupe de vingt-trois joueurs pour la finale de Ligue des champions samedi contre l'Inter Milan, \u00e0 Istanbul (21\u00a0heures).",
+               "url": "https://www.lequipe.fr/Football/Actualites/Manchester-city-au-complet-pour-la-finale-de-la-ligue-des-champions/1401522",
+               "urlToImage": "https://medias.lequipe.fr/img-photo-jpg/kyle-walker-est-present-dans-le-groupe-de-manchester-city-presse-sports/1500000001796010/0:0,1995:1330-640-427-75/57f76.jpg",
+               "publishedAt": "2023-06-08T14:46:51+00:00",
+               "content": "L'entra\u00eeneur de Manchester City Pep Guardiola devrait pouvoir compter sur toutes ses forces vives pour la finale de la Ligue des champions samedi \u00e0 Istanbul, contre l'Inter Milan (21\u00a0heures). Le club\u2026 [+235 chars]"
+          },
+          {
+               "source": {
+                    "id": "new-scientist",
+                    "name": "New Scientist"
+               },
+               "author": null,
+               "title": "Adding wild fungi to soil could make trees store more carbon",
+               "description": "A loblolly pine plantation in the state of Georgia is the test site for a start-up company trying to see if improving the fungi and other microbes in soil can help trees grow bigger and faster",
+               "url": "https://www.newscientist.com/article/2361604-adding-wild-fungi-to-soil-could-make-trees-store-more-carbon/",
+               "urlToImage": "https://images.newscientist.com/wp-content/uploads/2023/02/28175105/SEI_146112168.jpg",
+               "publishedAt": "2023-03-01T00:00:00Z",
+               "content": "By James Dinneen\r\nMycorrhizal fungi colonising a host plant\u2019s root tissues\r\nEmmanuel Lattes//Alamy\r\nA start-up has begun planting fungi and other microbes in soil collected from intact forests at a t\u2026 [+417 chars]"
+          }
+     ]
+}

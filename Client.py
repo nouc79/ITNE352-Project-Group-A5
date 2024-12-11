@@ -1,24 +1,10 @@
 import json
 import socket
 import ssl
-
-def connect_to_server():
-    # Establish a socket connection to the server
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect(('0.0.0.0', 5501))  # Connect to the SSL-enabled server
-
-    # Use SSL to secure the socket connection
-    context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)  # Set SSL context for server authentication
-    context.load_verify_locations("server.crt")  # Load server certificate to verify
-
-    # Use SSL to encrypt the socket connection
-    secure_client_socket = context.wrap_socket(client_socket, server_hostname="0.0.0.0")
-    return secure_client_socket
-
 def communicate_with_server(client_socket, message):
     # Send a message to the server
     client_socket.sendall(message.encode())  
-    return client_socket.recv(5501).decode()  # Receive the server's response
+    return client_socket.recv(1024).decode()  # Receive the server's response
 
 def display_main_menu():
     print("\nMain Menu:")
@@ -130,7 +116,7 @@ def list_all_sources(client_socket):
 def send_request(client_socket, mode, request_query, option):
     collection = json.dumps({'type': mode, 'query': request_query, 'option': option})
     client_socket.sendall(collection.encode())  # Sending request to the server
-    response = client_socket.recv(5501).decode()  # Receive the server's response
+    response = client_socket.recv(1024).decode()  # Receive the server's response
     try:
         response_data = json.loads(response)
         print(f"Server Response (JSON): {response_data}")
@@ -155,11 +141,21 @@ def display_item_details(details):
     for key, value in details.items():
         print(f"{key}: {value}")
 
-def main():
-    client_socket = connect_to_server()
-    username = input("Enter your username: ")
-    client_socket.sendall(username.encode())  # Sending the username to the server
-    display_options(client_socket)
 
-if __name__ == "__main__":
-    main()
+    
+
+# Create an SSL context for the client
+context = ssl.create_default_context()
+ # (Optional) Trust the server certificate (especially if self-signed)
+context.load_verify_locations("cert.pem")  # Use the same cert.pem provided by the server
+ 
+try:
+     # Create a TCP socket and wrap it with SSL
+     with socket.create_connection(('localhost', 8443)) as raw_sock:
+         with context.wrap_socket(raw_sock, server_hostname='localhost') as ssl_sock:
+             username = input("Enter your username: ")
+             ssl_sock.sendall(username.encode())  # Sending the username to the server
+             display_options(ssl_sock)  # Start the interactive client menu
+             
+except ssl.SSLError as e:
+     print(f"SSL error: {e}")
